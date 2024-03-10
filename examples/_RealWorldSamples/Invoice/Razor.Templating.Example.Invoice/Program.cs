@@ -71,20 +71,14 @@ namespace Razor.Templating.Example.Invoice
             {
                 container.Page(page =>
                 {
-                    page.Content().Column(col =>
-                    {
-                        col.Item().HTML(handler =>
-                        {
-                            handler.SetHtml(invoiceHtml);
-                        });
-                    });
+                    page.Content().HTML(x => x.SetHtml(invoiceHtml));
                 });
             }).GeneratePdf($"D:\\{Guid.NewGuid()}.pdf");
 
-            IronPdf.License.LicenseKey = "IRONPDF-BOARD4ALL.BIZ-912603-25CE53-E5FE2F718C-515728C4-NEx-UR6";
-            ChromePdfRenderer renderer = new ChromePdfRenderer();
-            PdfDocument pdfDocument = await renderer.RenderHtmlAsPdfAsync(invoiceHtml);
-            pdfDocument.SaveAs($"D:\\{Guid.NewGuid()}.pdf");
+            //IronPdf.License.LicenseKey = "IRONPDF-BOARD4ALL.BIZ-160542-5A5929-A010CDB1BF-8F185417-NEx-JB8";
+            //ChromePdfRenderer renderer = new ChromePdfRenderer();
+            //PdfDocument pdfDocument = await renderer.RenderHtmlAsPdfAsync(invoiceHtml);
+            //pdfDocument.SaveAs($"D:\\{Guid.NewGuid()}.pdf");
             Console.WriteLine(invoiceHtml);
             Console.ReadLine();
         }
