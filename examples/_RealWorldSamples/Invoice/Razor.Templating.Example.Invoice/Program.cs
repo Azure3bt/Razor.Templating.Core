@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using Razor.Templating.Core;
 using System.Threading.Tasks;
+using System.IO;
+using QuestPDF.Fluent;
+using HTMLQuestPDF.Extensions;
 namespace Razor.Templating.Example.Invoice
 {
     class Program
@@ -56,6 +59,20 @@ namespace Razor.Templating.Example.Invoice
                 CompanyLogoUrl = "https://raw.githubusercontent.com/soundaranbu/RazorTemplating/master/src/Razor.Templating.Core/assets/icon.png"
             };
             var invoiceHtml = await RazorTemplateEngine.RenderAsync("~/Invoice.cshtml", invoiceModel);
+
+            Document.Create(container =>
+            {
+                container.Page(page =>
+                {
+                    page.Content().Column(col =>
+                    {
+                        col.Item().HTML(handler =>
+                        {
+                            handler.SetHtml(invoiceHtml);
+                        });
+                    });
+                });
+            }).GeneratePdf($"D:\\{Guid.NewGuid()}.pdf");
             Console.WriteLine(invoiceHtml);
             Console.ReadLine();
         }
