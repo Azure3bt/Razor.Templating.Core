@@ -7,6 +7,7 @@
 
   <ItemGroup>
     <PackageReference Include="HTMLToQPDF" Version="1.1.0" />
+    <PackageReference Include="IronPdf" Version="2024.3.3" />
     <PackageReference Include="Razor.Templating.Core" Version="2.0.0-rc.1" />
   </ItemGroup>
 

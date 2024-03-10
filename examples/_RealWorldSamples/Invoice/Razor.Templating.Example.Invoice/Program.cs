@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.IO;
 using QuestPDF.Fluent;
 using HTMLQuestPDF.Extensions;
+using IronPdf;
 namespace Razor.Templating.Example.Invoice
 {
     class Program
@@ -40,24 +41,30 @@ namespace Razor.Templating.Example.Invoice
                     ReferenceNumber = "94759849374"
                 },
                 LineItems = new List<Templates.LineItem>
-        {
-            new Templates.LineItem
-            {
-            Id = 1,
-            ItemName = "USB Type-C Cable",
-            Quantity = 3,
-            PricePerItem = 10.33M
-            },
-               new Templates.LineItem
-            {
-            Id = 1,
-            ItemName = "SSD-512G",
-            Quantity = 10,
-            PricePerItem = 90.54M
-            }
-        },
+                {
+                    new Templates.LineItem
+                    {
+                    Id = 1,
+                    ItemName = "USB Type-C Cable",
+                    Quantity = 3,
+                    PricePerItem = 10.33M
+                    },
+                       new Templates.LineItem
+                    {
+                    Id = 1,
+                    ItemName = "SSD-512G",
+                    Quantity = 10,
+                    PricePerItem = 90.54M
+                    }
+                },
                 CompanyLogoUrl = "https://raw.githubusercontent.com/soundaranbu/RazorTemplating/master/src/Razor.Templating.Core/assets/icon.png"
             };
+
+            //using var file = File.CreateText($"");
+            //await file.WriteLineAsync("");
+
+
+
             var invoiceHtml = await RazorTemplateEngine.RenderAsync("~/Invoice.cshtml", invoiceModel);
 
             Document.Create(container =>
@@ -73,6 +80,11 @@ namespace Razor.Templating.Example.Invoice
                     });
                 });
             }).GeneratePdf($"D:\\{Guid.NewGuid()}.pdf");
+
+            IronPdf.License.LicenseKey = "IRONPDF-BOARD4ALL.BIZ-912603-25CE53-E5FE2F718C-515728C4-NEx-UR6";
+            ChromePdfRenderer renderer = new ChromePdfRenderer();
+            PdfDocument pdfDocument = await renderer.RenderHtmlAsPdfAsync(invoiceHtml);
+            pdfDocument.SaveAs($"D:\\{Guid.NewGuid()}.pdf");
             Console.WriteLine(invoiceHtml);
             Console.ReadLine();
         }

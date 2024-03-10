@@ -1,4 +1,4 @@
-﻿@model Razor.Templates.Invoice
+@model Razor.Templates.Invoice
 <!doctype html>
 <html>
 <head>
